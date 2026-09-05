@@ -47,4 +47,52 @@ letras.shift();
 letras.pop();
 letras.unshift('z');
 
-console.log(letras);
+// Tuple
+let tuple = [1, 'uno', true] as [number, string, boolean];
+
+// Enum
+enum Sexo { M = 'Masculino', F = 'Femenio' };
+enum Color { red = 'Rojo', yellow = 'Amarillo', green = 'Verde' };
+
+// Any
+let cualquierValor: any = 'Cualquier Valor';
+cualquierValor = 123;
+cualquierValor = true;
+
+// Object
+let objeto: object = { nombre: 'Juan', apellido: 'Pérez' };
+
+// Estructuras de Control
+let incluyeSigla: boolean;
+if (concatenar.includes(sigla)) incluyeSigla = true;
+else incluyeSigla = false;
+incluyeSigla = concatenar.includes(sigla) ? true : false;
+incluyeSigla = concatenar.includes(sigla);
+
+// switch, while, do-while
+
+for (let i = 0; i < letras.length; i++) console.log(`for clásico: ${letras[i]}`);
+for (const letra of letras) console.log(`for of: ${letra}`);   // Obtiene valores
+for (const indice in letras) console.log(`for in: ${indice}`); // Obtiene posiciones
+letras.forEach(letra => console.log(`forEach: ${letra}`));
+
+// Interface
+interface IVehiculo {
+  placa: string,
+  chasis: string,
+}
+let automovil: IVehiculo = { placa: 'ABC-123', chasis: 'AFDADF545FD' };
+
+// Funciones
+function saludar(nombre: string, edad: number): void {
+  console.log(`Mi nombre es ${nombre} y tengo ${edad}`);
+}
+saludar('Juan', 19);
+
+function sumar(numero1: number, numero2: number): number {
+  return numero1 + numero2;
+}
+
+const sumar2 = (numero1: number, numero2: number): number => numero1 + numero2;
+
+console.log(sumar2(5, 7));
