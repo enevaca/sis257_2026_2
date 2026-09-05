@@ -1,0 +1,48 @@
+  240  openssl s_client -connect google.com:443 -showcerts
+  241  openssl s_client -connect usfx.bo:443 -showcerts
+  242  nslookup google.com
+  243  ipconfig
+  244  nslookup google.com
+  245  nslookup google.com 8.8.8.8
+  246  nslookup google.com 8.8.8.9
+  247  nslookup google.com 8.8.8.4
+  248  nslookup google.com 8.8.8.8
+  249  nslookup 172.217.172.174
+  250  nslookup 8.8.8.8
+  251  nslookup 8.8.8.8
+  252  nslookup -type=TXT google.com
+  253  nslookup -type=TXT google.com
+  254  clear
+  256  pwd
+  257  cd /d/usfx/SIS257/
+  258  pwd
+  259  mkdir sis257_2026_2
+  260  cd sis257_2026_2
+  261  mkdir demo_terminal
+  262  ls
+  263  ls -la
+  264  cd demo_terminal/
+  265  touch comandos.txt
+  266  ls
+  267  ls -la
+  268  echo "Hola SIS257"
+  269  echo "Hola SIS257" > comandos.txt 
+  270  cat comandos.txt 
+  271  tail comandos.txt 
+  272  echo "# SIS257" > comandos.txt 
+  273  cat comandos.txt 
+  274  echo "Otra línea" >> comandos.txt 
+  275  cat comandos.txt 
+  276  echo "Hola" > saludo.txt
+  277  ls
+  278  cat saludo.txt 
+  279  mv saludo.txt saludos.md
+  280  ls -la
+  281  cat saludos.md 
+  282  rm /d/usfx/SIS257/sis257_2026_2/demo_terminal/saludos.md 
+  283  ls
+  284  cp comandos.txt copia.txt
+  285  ls
+  286  cd ..
+  287  history
+  288  history >> demo_terminal/comandos.txt 
