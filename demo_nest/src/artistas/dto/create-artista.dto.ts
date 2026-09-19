@@ -13,7 +13,7 @@ export class CreateArtistaDto {
   @ApiProperty()
   @IsNotEmpty({ message: 'La nacionalidad es obligatorio' })
   @IsString({ message: 'La nacionalidad debe ser de tipo cadena' })
-  @MaxLength(50, { message: 'La nacionalidad no puede tener más de 25 caracteres' })
+  @MaxLength(25, { message: 'La nacionalidad no puede tener más de 25 caracteres' })
   @Transform(({ value }): string | undefined => (typeof value == 'string' ? value.trim() : value))
   readonly nacionalidad: string;
 
