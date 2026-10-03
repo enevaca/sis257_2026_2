@@ -1,26 +1,47 @@
-import { Injectable } from '@nestjs/common';
+import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateAlbumDto } from './dto/create-album.dto';
 import { UpdateAlbumDto } from './dto/update-album.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Album } from './entities/album.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class AlbumesService {
-  create(createAlbumeDto: CreateAlbumDto) {
-    return 'This action adds a new albume';
+  constructor(@InjectRepository(Album) private readonly albumRepository: Repository<Album>) {}
+
+  async create(createAlbumeDto: CreateAlbumDto): Promise<Album> {
+    let album = await this.albumRepository.findOneBy({
+      idArtista: createAlbumeDto.idArtista,
+      nombre: createAlbumeDto.nombre,
+    });
+    if (album) throw new ConflictException('El album ya existe');
+
+    album = new Album();
+    Object.assign(album, createAlbumeDto);
+    return this.albumRepository.save(album);
   }
 
-  findAll() {
-    return `This action returns all albumes`;
+  async findAll(): Promise<Album[]> {
+    return this.albumRepository.find({ relations: { artista: true }, order: { nombre: 'ASC' } });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} albume`;
+  async findOne(id: number): Promise<Album> {
+    const album = await this.albumRepository.findOne({
+      where: { id },
+      relations: { artista: true },
+    });
+    if (!album) throw new NotFoundException('El album no existe');
+    return album;
   }
 
-  update(id: number, updateAlbumeDto: UpdateAlbumDto) {
-    return `This action updates a #${id} albume`;
+  async update(id: number, updateAlbumeDto: UpdateAlbumDto): Promise<Album> {
+    const album = await this.findOne(id);
+    Object.assign(album, updateAlbumeDto);
+    return this.albumRepository.save(album);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} albume`;
+  async remove(id: number): Promise<Album> {
+    const album = await this.findOne(id);
+    return this.albumRepository.softRemove(album);
   }
 }
