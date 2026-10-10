@@ -28,6 +28,13 @@ coverage
 
 .eslintcache
 
+# dotenv environment variable files
+.env
+.env.development.local
+.env.test.local
+.env.production.local
+.env.local
+
 # Cypress
 /cypress/videos/
 /cypress/screenshots/
