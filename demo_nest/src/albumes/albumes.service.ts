@@ -25,6 +25,14 @@ export class AlbumesService {
     return this.albumRepository.find({ relations: { artista: true }, order: { nombre: 'ASC' } });
   }
 
+  async findByArtista(idArtista: number): Promise<Album[]> {
+    return this.albumRepository.find({
+      where: { idArtista },
+      relations: { artista: true },
+      order: { nombre: 'ASC' },
+    });
+  }
+
   async findOne(id: number): Promise<Album> {
     const album = await this.albumRepository.findOne({
       where: { id },

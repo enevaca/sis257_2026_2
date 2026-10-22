@@ -17,6 +17,11 @@ export class AlbumesController {
     return this.albumesService.findAll();
   }
 
+  @Get('artista/:id')
+  findByArtista(@Param('id') id: string) {
+    return this.albumesService.findByArtista(+id);
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.albumesService.findOne(+id);

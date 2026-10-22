@@ -5,6 +5,7 @@ import { Button, Dialog, InputText, Select, Textarea } from 'primevue'
 import type { Cancion } from '@/models/cancion'
 import type { Genero } from '@/models/genero'
 import type { Album } from '@/models/album'
+import type { Artista } from '@/models/artista'
 
 const ENDPOINT = 'canciones'
 const props = defineProps({
@@ -32,14 +33,20 @@ const dialogVisible = computed({
 })
 
 const generos = ref<Genero[]>([])
+const artistas = ref<Artista[]>([])
 const albumes = ref<Album[]>([])
+const idArtista = ref<number>(0)
 
 async function obtenerGeneros() {
   generos.value = await http.get('generos').then((res) => res.data)
 }
 
+async function obtenerArtistas() {
+  artistas.value = await http.get('artistas').then((res) => res.data)
+}
+
 async function obtenerAlbumes() {
-  albumes.value = await http.get('albumes').then((res) => res.data)
+  albumes.value = await http.get(`albumes/artista/${idArtista.value}`).then((res) => res.data)
 }
 
 watch(
@@ -47,11 +54,14 @@ watch(
   (nuevoValor) => {
     if (nuevoValor) {
       obtenerGeneros()
-      obtenerAlbumes()
+      obtenerArtistas()
 
       if (props.cancion?.id) {
         cancion.value = { ...props.cancion }
+        idArtista.value = cancion.value.album.artista.id
+        obtenerAlbumes()
       } else {
+        idArtista.value = 0
         cancion.value = { genero: { id: 0 }, album: { id: 0 } } as Cancion
       }
     }
@@ -98,7 +108,21 @@ async function handleSave() {
           optionLabel="descripcion"
           optionValue="id"
           class="flex-auto"
+          filter
           autofocus
+        />
+      </div>
+      <div class="flex items-center gap-4 mb-4">
+        <label for="artista" class="font-semibold w-3">Artista</label>
+        <Select
+          id="artista"
+          v-model="idArtista"
+          :options="artistas"
+          optionLabel="nombre"
+          optionValue="id"
+          class="flex-auto"
+          filter
+          @change="obtenerAlbumes"
         />
       </div>
       <div class="flex items-center gap-4 mb-4">
@@ -110,6 +134,7 @@ async function handleSave() {
           optionLabel="nombre"
           optionValue="id"
           class="flex-auto"
+          filter
         />
       </div>
       <div class="flex items-center gap-4 mb-4">
@@ -118,7 +143,7 @@ async function handleSave() {
       </div>
       <div class="flex items-center gap-4 mb-4">
         <label for="duracion" class="font-semibold w-3">Duración</label>
-        <InputText id="duracion" v-model="cancion.duracion" class="flex-auto" autocomplete="off" />
+        <InputText id="duracion" v-model="cancion.duracion" class="flex-auto" v-mask="'99:99'" autocomplete="off" />
       </div>
       <div class="flex items-center gap-4 mb-4">
         <label for="tags" class="font-semibold w-3">Tags</label>

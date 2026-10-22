@@ -1,4 +1,4 @@
-import './assets/main.css'
+// import './assets/main.css'
 
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
@@ -8,14 +8,20 @@ import Aura from '@primevue/themes/aura'
 import 'primeicons/primeicons.css'
 import 'primeflex/primeflex.min.css'
 
+import 'bootstrap/dist/css/bootstrap.min.css'
+import 'bootstrap-icons/font/bootstrap-icons.css'
+import 'bootstrap'
+
 import App from './App.vue'
 import router from './router'
+import { Mask } from 'primevue'
 
 const app = createApp(App)
 
 app.use(createPinia())
 app.use(router)
 app.use(PrimeVue, {
+  license: import.meta.env.VITE_PRIMEUI_LICENSE,
   theme: {
     preset: Aura,
     options: {
@@ -25,5 +31,6 @@ app.use(PrimeVue, {
     },
   },
 })
+app.directive('mask', Mask)
 
 app.mount('#app')

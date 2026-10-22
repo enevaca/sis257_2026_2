@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import ArtistaList from '@/components/artista/ArtistaList.vue'
-import ArtistaSave from '@/components/artista/ArtistaSave.vue';
+import ArtistaSave from '@/components/artista/ArtistaSave.vue'
 import { Button } from 'primevue'
 import { ref } from 'vue'
 
@@ -28,18 +28,24 @@ function handleCloseDialog() {
 </script>
 
 <template>
-  <div>
-    <h2>Artistas</h2>
-    <Button label="Crear Nuevo" icon="pi pi-plus" @click="handleCreate" />
-    <ArtistaList ref="artistaListRef" @edit="handleEdit" />
-    <ArtistaSave
-      :mostrar="mostrarDialog"
-      :artista="artistaEdit"
-      :modoEdicion="!!artistaEdit"
-      @guardar="handleSave"
-      @close="handleCloseDialog"
-    />
-  </div>
+  <section class="section" data-section="section6">
+    <div class="container">
+      <div class="row pt-6 mt-6">
+        <div class="col-md-12">
+          <h2>Artistas</h2>
+          <Button label="Crear Nuevo" icon="pi pi-plus" @click="handleCreate" />
+          <ArtistaList ref="artistaListRef" @edit="handleEdit" />
+          <ArtistaSave
+            :mostrar="mostrarDialog"
+            :artista="artistaEdit"
+            :modoEdicion="!!artistaEdit"
+            @guardar="handleSave"
+            @close="handleCloseDialog"
+          />
+        </div>
+      </div>
+    </div>
+  </section>
 </template>
 
 <style scoped></style>

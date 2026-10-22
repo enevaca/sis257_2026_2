@@ -28,18 +28,24 @@ function handleCloseDialog() {
 </script>
 
 <template>
-  <div>
-    <h2>Canciones</h2>
-    <Button label="Crear Nuevo" icon="pi pi-plus" @click="handleCreate" />
-    <CancionList ref="cancionesListRef" @edit="handleEdit" />
-    <CancionSave
-      :mostrar="mostrarDialog"
-      :artista="cancionEdit"
-      :modoEdicion="!!cancionEdit"
-      @guardar="handleSave"
-      @close="handleCloseDialog"
-    />
-  </div>
+  <section class="section" data-section="section6">
+    <div class="container">
+      <div class="row pt-6 mt-6">
+        <div class="col-md-12">
+          <h2>Canciones</h2>
+          <Button label="Crear Nuevo" icon="pi pi-plus" @click="handleCreate" />
+          <CancionList ref="cancionesListRef" @edit="handleEdit" />
+          <CancionSave
+            :mostrar="mostrarDialog"
+            :cancion="cancionEdit"
+            :modoEdicion="!!cancionEdit"
+            @guardar="handleSave"
+            @close="handleCloseDialog"
+          />
+        </div>
+      </div>
+    </div>
+  </section>
 </template>
 
 <style scoped></style>

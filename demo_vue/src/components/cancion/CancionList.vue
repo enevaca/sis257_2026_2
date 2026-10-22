@@ -3,12 +3,15 @@ import { computed, onMounted, ref } from 'vue'
 import http from '@/plugins/axios'
 import { Button, Dialog, InputGroup, InputGroupAddon, InputText } from 'primevue'
 import type { Cancion } from '@/models/cancion'
+import VideoModal from '../VideoModal.vue';
 
 const ENDPOINT = 'canciones'
 const canciones = ref<Cancion[]>([])
 const busqueda = ref<string>('')
 const cancionDelete = ref<Cancion | null>(null)
 const mostrarConfirmDialog = ref<boolean>(false)
+const videoAbierto = ref<boolean>(false)
+const videoUrl = ref<string>('')
 const emit = defineEmits(['edit'])
 
 async function obtenerLista() {
@@ -50,7 +53,11 @@ defineExpose({ obtenerLista })
   <div>
     <InputGroup>
       <InputGroupAddon><i class="pi pi-search"></i></InputGroupAddon>
-      <InputText v-model="busqueda" type="text" placeholder="Buscar por titulo, artista, album o género" />
+      <InputText
+        v-model="busqueda"
+        type="text"
+        placeholder="Buscar por titulo, artista, album o género"
+      />
     </InputGroup>
     <table>
       <thead>
@@ -76,8 +83,14 @@ defineExpose({ obtenerLista })
           <td>{{ cancion.genero.descripcion }}</td>
           <td>{{ cancion.duracion }}</td>
           <td>{{ cancion.tags }}</td>
-          <td>
-            <Button icon="pi pi-youtube" aria-label="Enlace" text as="a" :href="cancion.url" target="_blank" />
+          <td class="acciones">
+            <Button
+              icon="pi pi-youtube"
+              aria-label="Enlace"
+              text
+              as="a"
+              @click.prevent="videoAbierto = true; videoUrl = cancion.url"
+            />
             <Button icon="pi pi-pencil" aria-label="Editar" text @click="emitirEdicion(cancion)" />
             <Button
               icon="pi pi-trash"
@@ -92,6 +105,7 @@ defineExpose({ obtenerLista })
         </tr>
       </tbody>
     </table>
+    <VideoModal v-model="videoAbierto" :url="videoUrl" titulo="Power HTML Template" />
     <Dialog
       v-model:visible="mostrarConfirmDialog"
       header="Confirmar Eliminación"
@@ -111,4 +125,9 @@ defineExpose({ obtenerLista })
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.acciones > button, .acciones a {
+  width: 20px;
+  margin-inline: 2px;
+}
+</style>
