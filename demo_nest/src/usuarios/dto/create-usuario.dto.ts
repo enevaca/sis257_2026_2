@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
 import {
-  IsBooleanString,
+  IsBoolean,
   IsDefined,
   IsEmail,
   IsNotEmpty,
@@ -36,6 +36,6 @@ export class CreateUsuarioDto {
   @ApiProperty()
   @IsOptional()
   @IsDefined({ message: 'El campo premium es obligatorio' })
-  @IsBooleanString({ message: 'El campo premium debe ser un valor booleano' })
+  @IsBoolean({ message: 'El campo premium debe ser un valor booleano' })
   readonly premium: boolean;
 }

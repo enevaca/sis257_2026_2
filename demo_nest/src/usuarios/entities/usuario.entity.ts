@@ -1,4 +1,6 @@
 import {
+  BeforeInsert,
+  BeforeUpdate,
   Column,
   CreateDateColumn,
   DeleteDateColumn,
@@ -6,6 +8,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { compare, genSalt, hash } from 'bcryptjs';
 
 @Entity('usuarios')
 export class Usuario {
@@ -35,4 +38,15 @@ export class Usuario {
 
   @DeleteDateColumn({ name: 'fecha_eliminacion' })
   fechaEliminacion: Date;
+
+  @BeforeInsert()
+  @BeforeUpdate()
+  async hashPassword() {
+    const salt = await genSalt();
+    this.clave = await hash(this.clave, salt);
+  }
+
+  async validatePassword(plainPassword: string): Promise<boolean> {
+    return compare(plainPassword, this.clave);
+  }
 }

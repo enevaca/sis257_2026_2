@@ -16,6 +16,7 @@ async function bootstrap() {
     .setDescription('API Rest para la gestión de música SIS257')
     .setVersion('1.0')
     .addTag('artistas')
+    .addBearerAuth({ type: 'http', scheme: 'bearer', bearerFormat: 'JWT', in: 'header' })
     .build();
   const documentFactory = () => SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, documentFactory);

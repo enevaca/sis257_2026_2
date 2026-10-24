@@ -1,9 +1,11 @@
 <script setup lang="ts">
+import { useAuthStore } from '@/stores';
 import { ref, computed, watch, nextTick, onMounted, onBeforeUnmount } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
 const route = useRoute()
 const router = useRouter()
+const authStore = useAuthStore();
 
 const menuOpen = ref(false)
 const activa = ref('section1')
@@ -73,7 +75,7 @@ onBeforeUnmount(() => observer?.disconnect())
         <li :class="{ active: enHome && activa === 'section6' }">
           <a href="#" @click.prevent="irA('section6')">Contact</a>
         </li>
-        <li :class="{ active: route.path.startsWith('/artistas') }">
+        <li v-if="authStore.token" :class="{ active: route.path.startsWith('/artistas') }">
           <RouterLink to="/artistas" @click="menuOpen = false">Artistas</RouterLink>
         </li>
         <li :class="{ active: route.path.startsWith('/canciones') }">
