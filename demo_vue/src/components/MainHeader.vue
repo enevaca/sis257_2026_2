@@ -52,7 +52,7 @@ onBeforeUnmount(() => observer?.disconnect())
 <template>
   <header class="main-header clearfix" role="header">
     <div class="logo">
-      <a href="#" @click.prevent="irA('section1')"><em>Grad</em> School</a>
+      <a href="#" @click.prevent="irA('section1')"><em>Music</em> SIS257</a>
     </div>
     <a href="#" class="menu-link" @click.prevent="menuOpen = !menuOpen">
       <i class="fa fa-bars"></i>
@@ -60,26 +60,33 @@ onBeforeUnmount(() => observer?.disconnect())
     <nav class="main-nav" :class="{ active: menuOpen }" role="navigation">
       <ul class="main-menu">
         <li :class="{ active: enHome && activa === 'section1' }">
-          <a href="#" @click.prevent="irA('section1')">Home</a>
+          <a href="#" @click.prevent="irA('section1')">Inicio</a>
+        </li>
+        <li :class="{ active: enHome && activa === 'artistas' }">
+          <a href="#" @click.prevent="irA('artistas')">Artistas</a>
         </li>
         <li class="has-submenu" :class="{ active: enHome && activa === 'section2' }">
-          <a href="#" @click.prevent="irA('section2')">About Us</a>
+          <a href="#" @click.prevent="irA('section2')">Acerca De</a>
           <ul class="sub-menu">
             <li><a href="#" @click.prevent="irA('section2')">Who we are?</a></li>
             <li><a href="#" @click.prevent="irA('section3')">What we do?</a></li>
           </ul>
         </li>
-        <li :class="{ active: enHome && activa === 'section4' }">
-          <a href="#" @click.prevent="irA('section4')">Courses</a>
-        </li>
         <li :class="{ active: enHome && activa === 'section6' }">
-          <a href="#" @click.prevent="irA('section6')">Contact</a>
+          <a href="#" @click.prevent="irA('section6')">Contacto</a>
         </li>
-        <li v-if="authStore.token" :class="{ active: route.path.startsWith('/artistas') }">
-          <RouterLink to="/artistas" @click="menuOpen = false">Artistas</RouterLink>
+        <li v-if="authStore.token" class="has-submenu" :class="{ active: enHome && activa === 'section2' }">
+          <a href="#" @click.prevent="irA('section2')">Catálogo</a>
+          <ul class="sub-menu">
+            <li><RouterLink to="/artistas" @click="menuOpen = false">Artistas</RouterLink></li>
+            <li><RouterLink to="/canciones" @click="menuOpen = false">Canciones</RouterLink></li>
+          </ul>
         </li>
-        <li :class="{ active: route.path.startsWith('/canciones') }">
-          <RouterLink to="/canciones" @click="menuOpen = false">Canciones</RouterLink>
+        <li v-if="!authStore.token" :class="{ active: route.path.startsWith('/login') }">
+          <RouterLink to="/login" @click="menuOpen = false">Iniciar Sesión</RouterLink>
+        </li>
+        <li v-else>
+          <a style="color: white;" @click="authStore.logout()">Cerrar Sesión</a>
         </li>
       </ul>
     </nav>

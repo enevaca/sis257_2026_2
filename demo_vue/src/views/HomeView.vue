@@ -3,6 +3,8 @@ import { ref, reactive, onMounted, onBeforeUnmount } from 'vue'
 import { Swiper, SwiperSlide } from 'swiper/vue'
 import { Autoplay } from 'swiper/modules'
 import VideoModal from '@/components/VideoModal.vue'
+import type { Artista } from '@/models/artista'
+import http from '@/plugins/axios'
 
 /* ---------- Navegación ---------- */
 function irA(id: string) {
@@ -186,6 +188,12 @@ const cursos = [
   },
 ]
 
+/* ---------- Artistas ---------- */
+const artistas = ref<Artista[]>([])
+async function obtenerArtistas() {
+  artistas.value = await http.get('artistas').then((response) => response.data)
+}
+
 /* ---------- Video (modal con YouTube) ---------- */
 const videoAbierto = ref(false)
 const videoUrl = 'https://www.youtube.com/embed/r9LtOG6pNUw?autoplay=1'
@@ -196,13 +204,17 @@ function enviarContacto() {
   console.log('Contacto:', { ...contacto })
   contacto.nombre = contacto.email = contacto.mensaje = ''
 }
+
+onMounted(() => {
+  obtenerArtistas()
+})
 </script>
 
 <template>
   <!-- ***** Banner ***** -->
   <section class="section main-banner" id="top" data-section="section1">
     <video autoplay muted loop id="bg-video">
-      <source src="/images/course-video.mp4" type="video/mp4" />
+      <source src="/images/pexels-2022395.mp4" type="video/mp4" />
     </video>
 
     <div class="video-overlay header-text">
@@ -368,6 +380,43 @@ function enviarContacto() {
             </form>
           </div>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ***** Artistas ***** -->
+  <section class="section courses" data-section="artistas">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="section-heading"><h2>Conoce a los artistas</h2></div>
+        </div>
+        <Swiper
+          :modules="[Autoplay]"
+          :slides-per-view="1"
+          :space-between="20"
+          :loop="true"
+          :autoplay="{ delay: 3500, disableOnInteraction: false }"
+          :breakpoints="{ 768: { slidesPerView: 2 }, 1200: { slidesPerView: 4 } }"
+        >
+          <SwiperSlide v-for="artista in artistas" :key="artista.id">
+            <div class="item">
+              <img :src="artista.fotografia" :alt="artista.nombre" width="285px" />
+              <div class="down-content">
+                <h4>{{ artista.nombre }}</h4>
+                <p>{{ artista.nacionalidad }}</p>
+                <!-- <div class="author-image">
+                  <img :src="`/images/${c.autor}`" :alt="`Author ${c.titulo}`" />
+                </div>
+                <div :class="c.gratis ? 'text-button-free' : 'text-button-pay'">
+                  <a href="#" @click.prevent>
+                    {{ c.gratis ? 'Free' : 'Pay' }} <i class="fa fa-angle-double-right"></i>
+                  </a>
+                </div> -->
+              </div>
+            </div>
+          </SwiperSlide>
+        </Swiper>
       </div>
     </div>
   </section>

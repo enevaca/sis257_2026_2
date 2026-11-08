@@ -4,6 +4,7 @@ import { CreateArtistaDto } from './dto/create-artista.dto';
 import { UpdateArtistaDto } from './dto/update-artista.dto';
 import { ApiBearerAuth } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { Public } from '../auth/decorators/auth-public.decorator';
 
 @ApiBearerAuth()
 @UseGuards(JwtAuthGuard)
@@ -17,6 +18,7 @@ export class ArtistasController {
   }
 
   @Get()
+  @Public()
   findAll() {
     return this.artistasService.findAll();
   }
